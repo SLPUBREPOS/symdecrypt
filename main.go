@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
-//	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -96,14 +95,14 @@ func decryptHandler(w http.ResponseWriter, r *http.Request) {
 	key := req.Key
 	cacheKey := fmt.Sprintf("%s:%s", alg, key)
 	keyCache.Set(cacheKey, key, cache.DefaultExpiration)
-	fmt.Println("cacheKey: ", cacheKey)
-	fmt.Println("key: ", key) 
-	fmt.Println("decodedCipher len:", len(decodedCipher))
-	fmt.Println("decodedCipher:", decodedCipher)
+	//fmt.Println("cacheKey: ", cacheKey)
+	//fmt.Println("key: ", key) 
+	//fmt.Println("decodedCipher len:", len(decodedCipher))
+	//fmt.Println("decodedCipher:", decodedCipher)
 	
 	plainText, err := decrypt(alg, decodedCipher, []byte(key))
 	if err != nil {
-		fmt.Println("Decrypt error:", err) 
+	//	fmt.Println("Decrypt error:", err) 
 		http.Error(w, "decryption failed: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
