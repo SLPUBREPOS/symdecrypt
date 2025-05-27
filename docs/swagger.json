@@ -1,0 +1,118 @@
+{
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "REST service for decrypting symmetric cipher texts",
+        "title": "Symmetric Decryption API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/algorithms": {
+            "get": {
+                "description": "Returns supported symmetric encryption algorithms",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Algorithms"
+                ],
+                "summary": "Get supported symmetric algorithms",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/decrypt": {
+            "post": {
+                "description": "Decrypts the provided cipher using the given algorithm and key",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Decryption"
+                ],
+                "summary": "Decrypt cipher text",
+                "parameters": [
+                    {
+                        "description": "Decryption Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.DecryptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.DecryptResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Decryption failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.DecryptRequest": {
+            "type": "object",
+            "properties": {
+                "algorithm": {
+                    "type": "string"
+                },
+                "cipher_text": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.DecryptResponse": {
+            "type": "object",
+            "properties": {
+                "plain_text_base64": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

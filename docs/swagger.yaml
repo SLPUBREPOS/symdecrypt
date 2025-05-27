@@ -1,0 +1,77 @@
+basePath: /api/v1
+consumes:
+- application/json
+definitions:
+  main.DecryptRequest:
+    properties:
+      algorithm:
+        type: string
+      cipher_text:
+        type: string
+      key:
+        type: string
+    type: object
+  main.DecryptResponse:
+    properties:
+      plain_text_base64:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST service for decrypting symmetric cipher texts
+  title: Symmetric Decryption API
+  version: "1.0"
+paths:
+  /algorithms:
+    get:
+      description: Returns supported symmetric encryption algorithms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+      summary: Get supported symmetric algorithms
+      tags:
+      - Algorithms
+  /decrypt:
+    post:
+      consumes:
+      - application/json
+      description: Decrypts the provided cipher using the given algorithm and key
+      parameters:
+      - description: Decryption Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.DecryptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.DecryptResponse'
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Decryption failed
+          schema:
+            type: string
+      summary: Decrypt cipher text
+      tags:
+      - Decryption
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
